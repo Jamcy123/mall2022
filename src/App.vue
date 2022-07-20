@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <Header></Header>
+    <mall-header></mall-header>
     <router-view></router-view>
-    <Footer v-show="$route.meta.showFooter"></Footer>
+    <mall-footer v-show="$route.meta.showFooter"></mall-footer>
   </div>
 </template>
 
 <script>
-import Header from './components/Header/Header.vue'
-import Footer from './components/Footer/Footer.vue'
+import MallHeader from './components/MallHeader/MallHeader.vue'
+import MallFooter from './components/MallFooter/MallFooter.vue'
 
 export default {
   name: 'App',
   components: {
-    Header,
-    Footer
+    MallHeader,
+    MallFooter
   }
 }
 </script>

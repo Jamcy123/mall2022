@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: 'Header',
+  name: 'MallHeader',
   data() {
     return {
       message: ''
