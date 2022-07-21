@@ -1,10 +1,6 @@
 <template>
   <div>
-    Search组件
-    <hr/>
-    {{$route.query.message}}
-    <hr/>
-    {{$route.params.message}}
+    <type-nav/>
   </div>
 </template>
 

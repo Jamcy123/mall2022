@@ -2,7 +2,39 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+      <h2 class="all"  @mouseenter="enterSort">全部商品分类</h2>
+      <transition name="sort">
+        <div class="sort" v-show="isShow"  @mouseleave="leaveSort">
+          <div class="all-sort-list2" @click="goSearch">
+            <div class="item" v-for="(c1, index) in categoryList" :key="c1.categoryId"
+              :class="{ cur: currentIndex === index }" @mouseenter="changeIndex(index)" @mouseleave="removeIndex">
+              <h3>
+                <a href="javascript:;" :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">
+                  {{ c1.categoryName }}
+                </a>
+              </h3>
+              <div class="item-list clearfix">
+                <div class="subitem">
+                  <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
+                    <dt>
+                      <a href="javascript:;" :data-categoryName="c2.categoryName" :data-category1Id="c2.categoryId">
+                        {{ c2.categoryName }}
+                      </a>
+                    </dt>
+                    <dd>
+                      <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                        <a href="javascript:;" :data-categoryName="c3.categoryName" :data-category1Id="c3.categoryId">
+                          {{ c3.categoryName }}
+                        </a>
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -13,38 +45,23 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item" v-for="c1 in categoryList" :key="c1.categoryId">
-            <h3>
-              <a href="">{{ c1.categoryName }}</a>
-            </h3>
-            <div class="item-list clearfix">
-              <div class="subitem">
-                <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
-                  <dt>
-                    <a href="">{{ c2.categoryName }}</a>
-                  </dt>
-                  <dd>
-                    <em  v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                      <a href="">{{ c3.categoryName }}</a>
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import throttle from 'lodash/throttle'
 
 export default {
   name: 'TypeNav',
+  data() {
+    return {
+      currentIndex: -1,
+      isShow: false
+    }
+  },
   computed: {
     ...mapState({
       categoryList: state => state.home.categoryList
@@ -52,6 +69,49 @@ export default {
   },
   mounted() {
     this.$store.dispatch('categoryList');
+    if (this.$route.path === '/home') {
+      this.isShow = true;
+    }
+  },
+  methods: {
+    changeIndex: throttle(function (index) {
+      this.currentIndex = index;
+    }, 50),
+    removeIndex() {
+      this.currentIndex = -1;
+    },
+    enterSort() {
+      this.isShow = true;
+    },
+    leaveSort() {
+      if (this.$route.path !== '/home') {
+        this.isShow = false;
+      }
+    },
+    goSearch(e) {
+      const {
+        categoryname,
+        category1id,
+        category2id,
+        category3id
+      } = e.target.dataset;
+      if (categoryname) {
+        const location = {
+          name: 'search',
+          query: {
+            categoryName: categoryname
+          }
+        };
+        if (category1id) {
+          location.query.category1Id = category1id;
+        } else if (category2id) {
+          location.query.category2Id = category2id;
+        } else if (category3id) {
+          location.query.category3Id = category3id;
+        }
+        this.$router.push(location);
+      }
+    }
   }
 }
 </script>
@@ -172,7 +232,23 @@ export default {
             }
           }
         }
+
+        .cur {
+          background-color: skyblue;
+        }
       }
+    }
+
+    .sort-enter {
+      height: 0;
+    }
+
+    .sort-enter-to {
+      height: 461px;
+    }
+
+    .sort-enter-active {
+      transition: all .2s linear;
     }
   }
 }
