@@ -1,10 +1,10 @@
 <template>
   <!-- 商品分类导航 -->
   <div class="type-nav">
-    <div class="container">
+    <div class="container" @mouseleave="leaveSort">
       <h2 class="all"  @mouseenter="enterSort">全部商品分类</h2>
       <transition name="sort">
-        <div class="sort" v-show="isShow"  @mouseleave="leaveSort">
+        <div class="sort" v-show="isShow">
           <div class="all-sort-list2" @click="goSearch">
             <div class="item" v-for="(c1, index) in categoryList" :key="c1.categoryId"
               :class="{ cur: currentIndex === index }" @mouseenter="changeIndex(index)" @mouseleave="removeIndex">
@@ -68,7 +68,6 @@ export default {
     })
   },
   mounted() {
-    this.$store.dispatch('categoryList');
     if (this.$route.path === '/home') {
       this.isShow = true;
     }
@@ -98,6 +97,7 @@ export default {
       if (categoryname) {
         const location = {
           name: 'search',
+          params: this.$route.params,
           query: {
             categoryName: categoryname
           }

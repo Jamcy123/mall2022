@@ -54,16 +54,12 @@ export default {
   },
   methods: {
     goSearch() {
-
       // this.$router.push('/search?message=' + this.message);
       this.$router.push({
         name: 'search',
+        query: this.$route.query,
         params: {
-          // message: this.message
-          message: '' || null
-        },
-        query: {
-          message: this.message.toUpperCase()
+          message: this.message || null
         }
       });
     }
