@@ -17,5 +17,8 @@ Vue.component('Carousel', Carousel);
 new Vue({
   router,
   store,
+  beforeCreate() {
+    Vue.prototype.$bus = this;
+  },
   render: h => h(App),
 }).$mount('#app');

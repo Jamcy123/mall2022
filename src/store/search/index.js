@@ -1,8 +1,32 @@
+import { reqSearchInfo } from '@/network'
 // search Store
-const state = {};
-const getters = {};
-const mutations = {};
-const actions = {};
+const state = {
+  searchList: {}
+};
+const getters = {
+  goodsList(state) {
+    return state.searchList.goodsList || [];
+  },
+  attrsList(state) {
+    return state.searchList.attrsList || [];
+  },
+  trademarkList(state) {
+    return state.searchList.trademarkList || [];
+  },
+};
+const mutations = {
+  GETSEARCHLIST(state, value) {
+    state.searchList = value;
+  }
+};
+const actions = {
+  async getSearchList({ commit }, payload) {
+    const result = await reqSearchInfo(payload);
+    if (result.code === 200) {
+      commit('GETSEARCHLIST', result.data);
+    }
+  }
+};
 
 export default {
   state,

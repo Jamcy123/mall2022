@@ -34,7 +34,7 @@
       </h1>
       <div class="searchArea">
         <form action="###" class="searchForm">
-          <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="message"/>
+          <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyword"/>
           <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">
             搜索
           </button>
@@ -49,19 +49,25 @@ export default {
   name: 'MallHeader',
   data() {
     return {
-      message: ''
+      keyword: ''
     }
+  },
+  mounted() {
+    this.$bus.$on('clear', this.clear);
   },
   methods: {
     goSearch() {
-      // this.$router.push('/search?message=' + this.message);
+      // this.$router.push('/search?keyword=' + this.keyword);
       this.$router.push({
         name: 'search',
         query: this.$route.query,
         params: {
-          message: this.message || null
+          keyword: this.keyword || null
         }
       });
+    },
+    clear() {
+      this.keyword = '';
     }
   }
 }

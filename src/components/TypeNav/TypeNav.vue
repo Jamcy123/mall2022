@@ -17,13 +17,13 @@
                 <div class="subitem">
                   <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
                     <dt>
-                      <a href="javascript:;" :data-categoryName="c2.categoryName" :data-category1Id="c2.categoryId">
+                      <a href="javascript:;" :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">
                         {{ c2.categoryName }}
                       </a>
                     </dt>
                     <dd>
                       <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                        <a href="javascript:;" :data-categoryName="c3.categoryName" :data-category1Id="c3.categoryId">
+                        <a href="javascript:;" :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">
                           {{ c3.categoryName }}
                         </a>
                       </em>

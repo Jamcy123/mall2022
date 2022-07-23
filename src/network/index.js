@@ -21,3 +21,11 @@ export const reqFloorList = () => mockRequest({
   url: '/floor',
   method: 'get'
 });
+
+// 获取Search 
+// /api/list POST 需要带参数
+export const reqSearchInfo = (params = {}) => request({
+  url: '/list',
+  method: 'post',
+  data: params
+});

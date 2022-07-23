@@ -50,7 +50,7 @@ const routes = [
   },
   {
     name: 'search',
-    path: '/search/:message?',
+    path: '/search/:keyword?',
     component: Search,
     meta: {showFooter: true}
   }
