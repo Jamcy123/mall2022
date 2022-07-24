@@ -95,9 +95,10 @@ export default {
         category3id
       } = e.target.dataset;
       if (categoryname) {
+        const params = this.$route.path.includes('/detail') ? '' : this.$route.params;
         const location = {
           name: 'search',
-          params: this.$route.params,
+          params,
           query: {
             categoryName: categoryname
           }

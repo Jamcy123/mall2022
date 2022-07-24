@@ -7,19 +7,19 @@ Vue.use(VueRouter);
 const originPush = VueRouter.prototype.push;
 const originReplace = VueRouter.prototype.replace;
 
-VueRouter.prototype.push = function(location, resolve, reject) {
-  if(resolve && reject) {
+VueRouter.prototype.push = function (location, resolve, reject) {
+  if (resolve && reject) {
     originPush.call(this, location, resolve, reject);
   } else {
-    originPush.call(this, location, () => {}, () => {});
+    originPush.call(this, location, () => { }, () => { });
   }
 }
 
-VueRouter.prototype.replace = function(location, resolve, reject) {
-  if(resolve && reject) {
+VueRouter.prototype.replace = function (location, resolve, reject) {
+  if (resolve && reject) {
     originReplace.call(this, location, resolve, reject);
   } else {
-    originReplace.call(this, location, () => {}, () => {});
+    originReplace.call(this, location, () => { }, () => { });
   }
 }
 
@@ -27,36 +27,46 @@ const Login = () => import('@/pages/Login/Login.vue');
 const Register = () => import('@/pages/Register/Register.vue');
 const Home = () => import('@/pages/Home/Home.vue');
 const Search = () => import('@/pages/Search/Search.vue');
+const Detail = () => import('@/pages/Detail/Detail.vue');
 
 const routes = [
   {
-    path:'*',
+    path: '*',
     redirect: '/home'
   },
   {
     path: '/login',
     component: Login,
-    meta: {showFooter: false}
+    meta: { showFooter: false }
   },
   {
     path: '/register',
     component: Register,
-    meta: {showFooter: false}
+    meta: { showFooter: false }
   },
   {
     path: '/home',
     component: Home,
-    meta: {showFooter: true}
+    meta: { showFooter: true }
   },
   {
     name: 'search',
     path: '/search/:keyword?',
     component: Search,
-    meta: {showFooter: true}
-  }
+    meta: { showFooter: true }
+  },
+  {
+    name: 'detail',
+    path: '/detail/:keyword?',
+    component: Detail,
+    meta: { showFooter: true }
+  },
 ];
 
 export default new VueRouter({
   mode: 'history',
-  routes
+  routes,
+  scrollBehavior() {
+    return { y: 0 };
+  }
 })

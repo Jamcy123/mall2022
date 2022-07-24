@@ -4,6 +4,9 @@ const state = {
   searchList: {}
 };
 const getters = {
+  total(state) {
+    return state.searchList.total || 0;
+  },
   goodsList(state) {
     return state.searchList.goodsList || [];
   },

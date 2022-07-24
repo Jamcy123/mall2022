@@ -7,7 +7,7 @@
         <div class="bread">
           <ul class="fl sui-breadcrumb">
             <li>
-              <a href="#">全部结果</a>
+              <a href="javascript:void(0);">全部结果</a>
             </li>
           </ul>
           <ul class="fl sui-tag">
@@ -42,36 +42,36 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ 'active': isOne }">
+                  <a href="javascript:void(0);" @click="changeOrder(1)">
+                    综合
+                    <span v-show="isOne">
+                      {{ isUp ? '👆' : '👇' }}
+                    </span>
+                  </a>
+
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ 'active': isTwo }" @click="changeOrder(2)">
+                  <a href="javascript:void(0);">
+                    价格
+                    <span v-show="isTwo">
+                      {{ isUp ? '👆' : '👇' }}
+                    </span>
+                  </a>
                 </li>
               </ul>
             </div>
           </div>
+
           <!-- 产品列表 -->
           <div class="goods-list">
             <ul class="yui3-g">
               <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank">
+                    <router-link :to="`/detail/${goods.id}`">
                       <img :src="goods.defaultImg" />
-                    </a>
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -94,35 +94,11 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+
+          <!-- 分页器 -->
+          <Pagenation :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5"
+            @getPageNo="getPageNo" />
+
         </div>
       </div>
     </div>
@@ -154,7 +130,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['goodsList'])
+    ...mapGetters(['goodsList', 'total']),
+    isOne() {
+      return this.searchParams.order.includes('1');
+    },
+    isTwo() {
+      return this.searchParams.order.includes('2');
+    },
+    isUp() {
+      return this.searchParams.order.includes('asc');
+    }
   },
   beforeMount() {
     Object.assign(this.searchParams, this.$route.params, this.$route.query);
@@ -212,6 +197,21 @@ export default {
     },
     removeAttr(index) {
       this.searchParams.props.splice(index, 1);
+      this.getData();
+    },
+    changeOrder(num) {
+      const orderArr = this.searchParams.order.split(':');
+      if (num === +orderArr[0]) {
+        orderArr[1] = this.isUp ? 'desc' : 'asc';
+      } else {
+        orderArr[0] = num;
+        orderArr[1] = 'desc';
+      }
+      this.searchParams.order = orderArr.join(':');
+      this.getData();
+    },
+    getPageNo(pageNo) {
+      this.searchParams.pageNo = pageNo;
       this.getData();
     }
   }
