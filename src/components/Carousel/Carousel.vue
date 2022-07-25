@@ -21,7 +21,7 @@ export default {
   name: 'Carousel',
   props: ['list'],
   watch: {
-    bannerList: {
+    list: {
       immediate: true,
       handler() {
         this.$nextTick(() => {

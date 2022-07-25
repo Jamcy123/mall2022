@@ -57,7 +57,7 @@ const routes = [
   },
   {
     name: 'detail',
-    path: '/detail/:keyword?',
+    path: '/detail/:skuId?',
     component: Detail,
     meta: { showFooter: true }
   },
