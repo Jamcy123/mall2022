@@ -28,6 +28,8 @@ const Register = () => import('@/pages/Register/Register.vue');
 const Home = () => import('@/pages/Home/Home.vue');
 const Search = () => import('@/pages/Search/Search.vue');
 const Detail = () => import('@/pages/Detail/Detail.vue');
+const AddCartSuccess = () => import('@/pages/AddCartSuccess/AddCartSuccess.vue');
+const ShopCart = () => import('@/pages/ShopCart/ShopCart.vue');
 
 const routes = [
   {
@@ -59,6 +61,18 @@ const routes = [
     name: 'detail',
     path: '/detail/:skuId?',
     component: Detail,
+    meta: { showFooter: true }
+  },
+  {
+    name: 'addCartSuccess',
+    path: '/addCartSuccess/:skuNum?',
+    component: AddCartSuccess,
+    meta: { showFooter: true }
+  },
+  {
+    name: 'shopCart',
+    path: '/shopCart',
+    component: ShopCart,
     meta: { showFooter: true }
   },
 ];

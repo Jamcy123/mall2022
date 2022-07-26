@@ -1,10 +1,12 @@
 import { reqGoodsInfo, reqAddOrUpdateShopCart } from "@/network";
+import { getUUID } from '@/utils/uuid_token'
 
 
 // detail Store
 const state = {
   goodsInfo: {},
-  shopCart: []
+  shopCart: [],
+  uuid_token: getUUID()
 };
 const getters = {
   // 路径导航数据
@@ -37,7 +39,14 @@ const actions = {
     }
   },
   async addOrUpdateShopCart(_, { skuId, skuNum }) {
-    const result = await reqAddOrUpdateShopCart(skuId, skuNum);
+    return await reqAddOrUpdateShopCart(skuId, skuNum)
+    .then(res => {
+      if (res.code == 200) return Promise.resolve('请求成功');
+      throw new Error('请求失败');
+    })
+    .catch(err => {
+      return Promise.reject(err);
+    });
   },
 
 };

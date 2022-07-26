@@ -372,7 +372,11 @@ export default {
       this.$store.dispatch('addOrUpdateShopCart', {
         skuId: this.$route.params.skuId,
         skuNum: this.skuNum
-      });
+      }).then(() => {
+        sessionStorage.setItem('skuInfo', JSON.stringify(this.skuInfo));
+        this.$router.push(`/addCartSuccess/${this.skuNum}`);
+      }).catch(console.log);
+
     }
   }
 }
