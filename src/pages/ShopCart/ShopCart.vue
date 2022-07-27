@@ -42,11 +42,12 @@
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox" :checked="isAllChecked">
+        <input class="chooseAll" type="checkbox" :checked="isAllChecked"
+          @change="changeAllChecked($event.target.checked)">
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="#none" @click="deleteCheckedAll">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -138,6 +139,30 @@ export default {
         .then(() => {
           this.getData();
         }).catch(console.log);
+    },
+    changeAllChecked(checked) {
+      const promiseArr = [];
+      this.cartInfoList.forEach(element => {
+        promiseArr.push(this.$store.dispatch('updateCheckedById', {
+          skuId: element.skuId,
+          isChecked: checked ? 1 : 0
+        }));
+      })
+      Promise.all(promiseArr).then(() => {
+        this.getData();
+      }).catch(console.log);
+    },
+    deleteCheckedAll() {
+      const promiseArr = [];
+      this.cartInfoList.forEach(element => {
+        if (element.isChecked === 1) {
+          promiseArr.push(this.$store.dispatch('deleteCartListBySkuId', element.skuId));
+        }
+      });
+      Promise.all(promiseArr).then(() => {
+        this.getData();
+        console.log('删除成功');
+      })
     }
   }
 }

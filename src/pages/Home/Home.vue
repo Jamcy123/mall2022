@@ -36,6 +36,9 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getFloorList');
+    this.$store.dispatch('getUserInfo')
+    .then(console.log)
+    .catch(console.log);
   }
 }
 </script>
