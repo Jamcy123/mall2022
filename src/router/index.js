@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { getToken } from '../utils/token.js';
+import store from '../store'
 
 Vue.use(VueRouter);
 
@@ -30,6 +32,8 @@ const Search = () => import('@/pages/Search/Search.vue');
 const Detail = () => import('@/pages/Detail/Detail.vue');
 const AddCartSuccess = () => import('@/pages/AddCartSuccess/AddCartSuccess.vue');
 const ShopCart = () => import('@/pages/ShopCart/ShopCart.vue');
+const Trade = () => import('@/pages/Trade/Trade.vue');
+const Pay = () => import('@/pages/Pay/Pay.vue');
 
 const routes = [
   {
@@ -75,12 +79,54 @@ const routes = [
     component: ShopCart,
     meta: { showFooter: true }
   },
+  {
+    name: 'trade',
+    path: '/trade',
+    component: Trade,
+    meta: { showFooter: true }
+  },
+  {
+    name: 'pay',
+    path: '/pay',
+    component: Pay,
+    meta: { showFooter: true }
+  },
 ];
 
-export default new VueRouter({
+const router = new VueRouter({
   mode: 'history',
   routes,
   scrollBehavior() {
     return { y: 0 };
   }
-})
+});
+
+router.beforeEach((to, from, next) => {
+  const token = getToken();
+  const name = store.state.user.userInfo.name;
+
+  if (token) {
+    // 登录之后 无法去login和register
+    if (to.path === '/login' || to.path === '/register') {
+      next('/home');
+    } else {
+      // 登录了但未获取用户信息，则发送获取
+      if (!name) {
+        store.dispatch('getUserInfo')
+          .then(() => {
+            next();
+          })
+          .catch(() => {
+            store.dispatch('userLogout');
+            next('/login');
+          });
+      } else {
+        next();
+      }
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;

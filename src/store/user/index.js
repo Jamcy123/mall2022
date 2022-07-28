@@ -1,6 +1,8 @@
 import { reqCheckCode, reqUserRegister, reqUserLogin, reqUserInfo, reqLogout } from "@/network";
 import { setToken, getToken, removeToken } from '@/utils/token'
 
+// user store
+
 const state = {
   checkCode: '',
   token: getToken(),

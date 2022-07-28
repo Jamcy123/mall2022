@@ -7,10 +7,16 @@ import Pagenation from './components/Pagenation/Pagenation.vue';
 import router from '@/router';
 import store from '@/store';
 
+import * as API from './network'
+
 import '@/mock/mockServe';
 import 'swiper/css/swiper.css';
+import { Button, MessageBox } from 'element-ui';
 
 Vue.config.productionTip = false;
+Vue.use(Button);
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
 
 // 注册全局组件
 Vue.component('TypeNav', TypeNav);
@@ -22,6 +28,7 @@ new Vue({
   store,
   beforeCreate() {
     Vue.prototype.$bus = this;
+    Vue.prototype.$API = API;
   },
   render: h => h(App),
 }).$mount('#app');

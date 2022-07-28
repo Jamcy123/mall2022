@@ -34,42 +34,42 @@ export const reqSearchInfo = (params = {}) => request({
 // /api/item/{ skuId }
 export const reqGoodsInfo = skuId => request({
   url: '/item/' + skuId,
-  method: 'get',
+  method: 'get'
 });
 
 // 添加购物车
 // /api/cart/addToCart/{ skuId }/{ skuNum } POST
 export const reqAddOrUpdateShopCart = (skuId, skuNum) => request({
   url: `/cart/addToCart/${skuId}/${skuNum}`,
-  method: 'post',
+  method: 'post'
 });
 
 // 添加购物车
 // /api/cart/cartList
 export const reqCartList = () => request({
   url: '/cart/cartList',
-  method: 'get',
+  method: 'get'
 });
 
 // 删除购物车产品
 // /api/cart/deleteCart/{skuId} method: delete
 export const reqDeleteCartById = skuId => request({
   url: `/cart/deleteCart/${skuId}`,
-  method: 'delete',
+  method: 'delete'
 });
 
 // 修改商品的选中状态
 // /api/cart/checkCart/{skuId}/{isChecked} method: get
 export const reqUpdateCheckedById = (skuId, isChecked) => request({
   url: `/cart/checkCart/${skuId}/${isChecked}`,
-  method: 'get',
+  method: 'get'
 });
 
 // 获取验证码
 // /api/user/passport/sendCode/{phone} method: get
 export const reqCheckCode = phoneNum => request({
   url: `/user/passport/sendCode/${phoneNum}`,
-  method: 'get',
+  method: 'get'
 });
 
 // 提交注册信息
@@ -77,7 +77,7 @@ export const reqCheckCode = phoneNum => request({
 export const reqUserRegister = data => request({
   url: '/user/passport/register',
   data,
-  method: 'post',
+  method: 'post'
 });
 
 // 提交登录信息
@@ -85,19 +85,48 @@ export const reqUserRegister = data => request({
 export const reqUserLogin = data => request({
   url: '/user/passport/login',
   data,
-  method: 'post',
+  method: 'post'
 });
 
 // 获取用户信息
 // /api/user/passport/auth/getUserInfo method: get
 export const reqUserInfo = () => request({
   url: '/user/passport/auth/getUserInfo',
-  method: 'get',
+  method: 'get'
 });
 
 // 退出登录
 // /api/user/passport/logout method: get
 export const reqLogout = () => request({
   url: '/user/passport/logout',
-  method: 'get',
+  method: 'get'
+});
+
+// 获取用户信息
+// /api/user/userAddress/auth/findUserAddressList method: get
+export const reqAddressInfo = () => request({
+  url: '/user/userAddress/auth/findUserAddressList',
+  method: 'get'
+});
+
+// 获取商品清单
+// /api/order/auth/trade method: get
+export const reqOrderInfo = () => request({
+  url: '/order/auth/trade',
+  method: 'get'
+});
+
+// 获取商品清单
+// /api/order/auth/submitOrder method: post
+export const reqSubmitOrder = (tradeNo, data) => request({
+  url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+  data,
+  method: 'post'
+});
+
+// 获取商品清单
+// /api/payment/weixin/createNative/{orderId} method: get
+export const reqPayInfo = orderId => request({
+  url: `/payment/weixin/createNative/${orderId}`,
+  method: 'get'
 });
