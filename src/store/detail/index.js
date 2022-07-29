@@ -39,8 +39,6 @@ const actions = {
     }
   },
   async addOrUpdateShopCart(_, { skuId, skuNum }) {
-    console.log('_: ', _);
-
     return await reqAddOrUpdateShopCart(skuId, skuNum)
     .then(res => {
       if (res.code == 200) return Promise.resolve('请求成功');

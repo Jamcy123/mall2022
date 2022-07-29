@@ -87,8 +87,8 @@ export default {
         password
       })
         .then(res => {
-          console.log('res: ', res);
-          this.$router.push('/home');
+          const toPath = this.$route.query.toPath || '/home';
+          this.$router.push(toPath);
         })
         .catch(console.log);
     }

@@ -34,6 +34,10 @@ const AddCartSuccess = () => import('@/pages/AddCartSuccess/AddCartSuccess.vue')
 const ShopCart = () => import('@/pages/ShopCart/ShopCart.vue');
 const Trade = () => import('@/pages/Trade/Trade.vue');
 const Pay = () => import('@/pages/Pay/Pay.vue');
+const PaySuccess = () => import('@/pages/PaySuccess/PaySuccess.vue');
+const Center = () => import('@/pages/Center/Center.vue');
+const MyOrder = () => import('@/pages/Center/MyOrder/MyOrder.vue');
+const GroupOrder = () => import('@/pages/Center/GroupOrder/GroupOrder.vue');
 
 const routes = [
   {
@@ -83,18 +87,58 @@ const routes = [
     name: 'trade',
     path: '/trade',
     component: Trade,
-    meta: { showFooter: true }
+    meta: { showFooter: true },
+    beforeEnter: (to, from, next) => {
+      if (from.path === '/shopCart') {
+        next();
+      } else {
+        next('/shopCart');
+      }
+    }
   },
   {
     name: 'pay',
     path: '/pay',
     component: Pay,
+    meta: { showFooter: true },
+    beforeEnter: (to, from, next) => {
+      if (from.path === '/trade') {
+        next();
+      } else {
+        next('/trade');
+      }
+    }
+  },
+  {
+    name: 'paySuccess',
+    path: '/paySuccess',
+    component: PaySuccess,
     meta: { showFooter: true }
+  },
+  {
+    name: 'center',
+    path: '/center',
+    component: Center,
+    meta: { showFooter: true },
+    children: [
+      {
+        path: '/center',
+        redirect: '/center/myOrder'
+      },
+      {
+        path: 'myOrder',
+        component: MyOrder
+      },
+      {
+        path: 'groupOrder',
+        component: GroupOrder
+      }
+    ]
   },
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  // mode: 'history',
   routes,
   scrollBehavior() {
     return { y: 0 };
@@ -125,7 +169,13 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    next();
+    // 未登录不可去部分页面
+    const blacklist = ['/trade', '/pay', '/paysuccess', '/center', '/center/myOrder', '/center/groupOrder'];
+    if (blacklist.includes(to.path)) {
+      next('/login?toPath=' + to.path);
+    } else {
+      next();
+    }
   }
 });
 

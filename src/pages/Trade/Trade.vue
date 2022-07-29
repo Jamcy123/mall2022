@@ -118,8 +118,12 @@ export default {
     })
   },
   mounted() {
-    this.$store.dispatch('getAddressInfo');
-    this.$store.dispatch('getOrderInfo');
+    this.$store.dispatch('getAddressInfo')
+      .then(console.log)
+      .catch(console.log);
+    this.$store.dispatch('getOrderInfo')
+      .then(console.log)
+      .catch(console.log);
   },
   methods: {
     changeDefault(address) {

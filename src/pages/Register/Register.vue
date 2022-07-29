@@ -6,32 +6,46 @@
         <span class="go">我有账号，去 <a href="login.html" target="_blank">登陆</a>
         </span>
       </h3>
+
       <div class="content">
         <label>手机号:</label>
-        <input type="text" placeholder="请输入你的手机号" v-model="phoneNum">
-        <span class="error-msg">错误提示信息</span>
+        <input placeholder="请输入你的手机号" v-model="phoneNum" name="phoneNum"
+          v-validate="{ required: true, regex: /^1\d{10}$/ }" :class="{ invalid: errors.has('phoneNum') }" />
+        <span class="error-msg">{{ errors.first('phoneNum') }}</span>
       </div>
+
       <div class="content">
         <label>验证码:</label>
-        <input type="text" placeholder="请输入验证码" v-model="checkCode">
+        <input placeholder="请输入验证码" v-model="checkCode" name="checkCode"
+          v-validate="{ required: true, regex: /^\d{6}$/ }" :class="{ invalid: errors.has('checkCode') }" />
         <button style="width:100px;height:38px" @click="getCheckCode">获取验证码</button>
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg">{{ errors.first('checkCode') }}</span>
       </div>
+
       <div class="content">
         <label>登录密码:</label>
-        <input type="password" placeholder="请输入你的登录密码" v-model="password">
-        <span class="error-msg">错误提示信息</span>
+        <input placeholder="请输入你的登录密码" v-model="password" name="password" type="password"
+          v-validate="{ required: true, regex: /^[0-9A-Za-z]{3,10}$/ }" :class="{ invalid: errors.has('password') }" />
+        <span class="error-msg">{{ errors.first('password') }}</span>
       </div>
+
       <div class="content">
         <label>确认密码:</label>
-        <input type="password" placeholder="请输入确认密码" v-model="repeatPassword">
-        <span class="error-msg">错误提示信息</span>
+        <input placeholder="请输入确认密码" v-model="repeatPassword" name="repeatPassword" type="password"
+          v-validate="{ required: true, regex: /^[0-9A-Za-z]{3,10}$/ }"
+          :class="{ invalid: errors.has('password'), is: password }" />
+        <span class="error-msg">{{ errors.first('repeatPassword') }}</span>
       </div>
+
       <div class="controls">
-        <input name="m1" type="checkbox" :checked="protocol">
+        <input :checked="protocol" name="protocol" type="checkbox"
+          v-validate="{ required: true, 'protocol': true }" :class="{ invalid: errors.has('protocol') }" />
+
         <span>同意协议并注册《尚品汇用户协议》</span>
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg">{{ errors.first('protocol') }}</span>
+
       </div>
+
       <div class="btn">
         <button @click="userRegister">完成注册</button>
       </div>
@@ -82,17 +96,21 @@ export default {
       if (!this.phoneNum || !this.checkCode || this.password !== this.repeatPassword) {
         return;
       }
-
-      this.$store.dispatch('getUserRegister', {
-        phone: this.phoneNum,
-        code: this.checkCode,
-        password: this.password,
-      })
-        .then(res => {
-          console.log(res);
-          this.$router.push('/login');
+      this.$validator.validateAll() //全部表单验证
+        .then(() => {
+          this.$store.dispatch('getUserRegister', {
+            phone: this.phoneNum,
+            code: this.checkCode,
+            password: this.password,
+          })
+            .then(res => {
+              console.log(res);
+              this.$router.push('/login');
+            })
+            .catch(alert);
         })
-        .catch(alert);
+        .catch(console.log)
+
     }
   }
 }

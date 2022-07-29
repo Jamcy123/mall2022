@@ -21,9 +21,9 @@
           </div>
         </div>
         <div class="typeList">
-          <a href="###">我的订单</a>
-          <a href="###">我的购物车</a>
-          <a href="###">我的mall</a>
+          <router-link to="/center/myOrder">我的订单</router-link>
+          <router-link to="/shopCart">我的购物车</router-link>
+          <router-link to="/home">我的mall</router-link>
           <a href="###">mall会员</a>
           <a href="###">企业采购</a>
           <a href="###">关注mall</a>
@@ -89,6 +89,7 @@ export default {
       this.$store.dispatch('userLogout')
       .then(console.log)
       .catch(console.log);
+      this.$router.push('/home');
     }
   }
 }

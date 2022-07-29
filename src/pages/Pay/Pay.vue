@@ -84,12 +84,14 @@
 </template>
 
 <script>
+import QRCode from 'qrcode';
 
 export default {
   name: 'Pay',
   data() {
     return {
-      payInfo: {}
+      payInfo: {},
+      code: ''
     }
   },
   computed: {
@@ -108,15 +110,55 @@ export default {
         })
         .catch(console.log);
     },
-    open() {
-      this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', 'HTML 片段', {
+    changeCode(code) {
+      this.$store.dispatch('changeCode', code);
+    },
+    async open() {
+      const url = await QRCode.toDataURL(this.payInfo.codeUrl);
+      this.$alert(`<img src=${url} />`, 'HTML 片段', {
         dangerouslyUseHTMLString: true,
         center: true,
         showCancelButton: true,
         cancelButtonText: '支付遇见问题',
         confirmButtonText: '已支付成功',
-        showClose: false
-      });
+        showClose: false,
+        beforeClose: (type, instance) => {
+          if (type === 'cancel') {
+            clearInterval(this.timer);
+            this.timer = null;
+            this.$msgbox.close();
+          } else {
+            this.changeCode(this.code);
+            // if (this.code === 200) {
+            clearInterval(this.timer);
+            this.timer = null;
+            this.$msgbox.close();
+            this.$router.push('/paysuccess');
+            return;
+            // }
+            alert('未支付成功');
+          }
+        }
+      })
+        .then((a, b, c) => {
+          console.log('(a,b,c): ', a, b, c);
+          console.log('已支付成功')
+        })
+        .catch(() => console.log('支付遇见问题'));
+
+      this.timer = setInterval(async () => {
+        const result = await this.$API.reqPayStatus(this.orderId);
+        console.log('result: ', result);
+        this.changeCode(this.code);
+
+        if (result.code === 200) {
+          clearInterval(this.timer);
+          this.timer = null;
+          this.code = result.code;
+          this.$msgbox.close();
+          this.$router.push('/paysuccess');
+        }
+      }, 1000);
     }
   }
 }
