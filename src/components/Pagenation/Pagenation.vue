@@ -10,6 +10,7 @@
 
     <button v-show="showEndPoint">···</button>
     <button v-show="showEndNum" @click="getPageNo(totalPage)">{{ totalPage }}</button>
+
     <button :disabled="+pageNo === totalPage" @click="getPageNo(+pageNo + 1)">下一页</button>
     <button style="margin-left: 30px">
       共 {{ total }} 条
@@ -34,8 +35,8 @@ export default {
         start = 1;
         end = totalPage;
       } else {
-        let left = pageNo - Math.floor(continues / 2);
-        let right = pageNo + Math.floor(continues / 2);
+        let left = +pageNo - Math.floor(continues / 2);
+        let right = +pageNo + Math.floor(continues / 2);
         start = left < 1 ? 1 : left;
         end = right > totalPage ? totalPage : right;
       }
@@ -47,9 +48,11 @@ export default {
     continueArr() {
       const len = this.pageStartNumEndNum.end - this.pageStartNumEndNum.start + 1;
       const resArr = Array(len).fill(0);
+
       resArr.forEach((_, index) => {
         resArr[index] = index + this.pageStartNumEndNum.start;
       });
+      
       return resArr;
     },
     showStartNum() {

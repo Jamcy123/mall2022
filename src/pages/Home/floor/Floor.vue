@@ -25,7 +25,7 @@
             </div>
             <!-- 轮播图 -->
             <div class="floorBanner">
-              <carousel :list="list.carouselList"/>
+              <!-- <carousel :list="list.carouselList"/> -->
             </div>
             <div class="split">
               <span class="floor-x-line"></span>

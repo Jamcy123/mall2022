@@ -35,7 +35,7 @@ export default {
     })
   },
   mounted() {
-    console.log('this.$store.pay.code: ', this.$store.state.pay.code);
+    console.log('Home.vue-this.$store.pay.code: ', this.$store.state.pay.code);
     this.$store.dispatch('getFloorList');
     this.$store.dispatch('getUserInfo')
     .then(console.log)

@@ -2,7 +2,7 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container" @mouseleave="leaveSort">
-      <h2 class="all"  @mouseenter="enterSort">全部商品分类</h2>
+      <h2 class="all" @mouseenter="enterSort">全部商品分类</h2>
       <transition name="sort">
         <div class="sort" v-show="isShow">
           <div class="all-sort-list2" @click="goSearch">
@@ -13,7 +13,7 @@
                   {{ c1.categoryName }}
                 </a>
               </h3>
-              <div class="item-list clearfix">
+              <div class="item-list clearfix" v-show="currentIndex === index">
                 <div class="subitem">
                   <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
                     <dt>
@@ -53,6 +53,7 @@
 <script>
 import { mapState } from 'vuex';
 import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 
 export default {
   name: 'TypeNav',
@@ -174,7 +175,7 @@ export default {
           }
 
           .item-list {
-            display: none;
+            // display: none;
             position: absolute;
             width: 734px;
             min-height: 460px;
@@ -227,11 +228,11 @@ export default {
             }
           }
 
-          &:hover {
-            .item-list {
-              display: block;
-            }
-          }
+          // &:hover {
+          //   .item-list {
+          //     display: block;
+          //   }
+          // }
         }
 
         .cur {

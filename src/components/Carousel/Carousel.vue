@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import Swiper from 'swiper'
+import Swiper from 'swiper';
+
 export default {
   name: 'Carousel',
   props: ['list'],
